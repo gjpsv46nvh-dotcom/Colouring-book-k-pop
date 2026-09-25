@@ -1,1 +1,12 @@
-v8 complete colouring game. 26 selectable colouring pages. All newly supplied family pictures are separate pages. Existing K-pop Demon Hunters pages, birthday/sibling pages, finger colouring, four brush sizes, fill, eraser, undo, clear, large picture layout and the v7 clean-outline bug fix are retained.
+K-POP DEMON HUNTERS COLOURING GAME v9.2
+
+Updates from v9.1 Touch Fix:
+- Preserves corrected touch/pointer alignment
+- Full-screen/full-size colouring artwork
+- Expanded standard colour palette
+- 8 skin-tone colours
+- Rebuilt glitter painting system
+- 4 stronger glitter styles: Rainbow, Pink, Gold and Blue
+- Denser glitter particles with visible sparkle base
+- Save Photo button for saving/sharing finished pages
+- Undo, clear, fill, eraser and four brush sizes retained
