@@ -1,5 +1,1 @@
-v7 fixes the finger-colouring dark/grainy redraw bug.
-Each colouring page now has a separate transparent black-outline overlay.
-Finger paint is drawn normally and only the transparent ink lines are redrawn above it.
-No multiply blending is used. v6 gallery, family pages, K-pop character pages, large picture layout,
-bottom controls and four brush sizes are retained.
+v8 complete colouring game. 26 selectable colouring pages. All newly supplied family pictures are separate pages. Existing K-pop Demon Hunters pages, birthday/sibling pages, finger colouring, four brush sizes, fill, eraser, undo, clear, large picture layout and the v7 clean-outline bug fix are retained.
