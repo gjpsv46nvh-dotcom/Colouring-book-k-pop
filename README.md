@@ -1,4 +1,1 @@
-v5: Large colouring workspace with controls below the picture.
-The colouring picture occupies about 80% of the gameplay viewport on larger screens.
-Colours, four brush sizes, fill, finger-colour, eraser, undo and clear are all below the picture.
-All v4 K-pop character pages and preschool progression are retained.
+v6 adds two custom family colouring pages to the existing K-pop Demon Hunters colouring book: Birthday Cake and Sibling Hug. The large-picture layout, bottom colour/brush controls, four brush sizes, finger colouring, fill, eraser, undo and clear are retained.
