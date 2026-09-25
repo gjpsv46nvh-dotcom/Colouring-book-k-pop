@@ -1,1 +1,1 @@
-K-POP Demon Hunters Colouring Book v1\nOpen index.html or deploy the folder to GitHub/Vercel.\n
+v3: gallery first. Tapping a picture opens a separate colouring workspace. Colours, brush sizes and tools are on the right.

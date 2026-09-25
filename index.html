@@ -1,44 +1,35 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>K-POP Demon Hunters Colouring</title><style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(135deg,#27145d,#0b4b9b 55%,#7b1a85);color:#fff;min-height:100vh}
-header{padding:14px 18px;text-align:center;font-weight:1000;font-size:clamp(22px,4vw,40px);text-shadow:0 3px 0 #55208b}header small{display:block;font-size:13px;font-weight:700}
-.app{display:grid;grid-template-columns:190px 1fr 180px;gap:12px;padding:12px;max-width:1400px;margin:auto}.panel{background:#17215ddd;border:2px solid #75d6ff;border-radius:22px;padding:10px;box-shadow:0 10px 30px #0005}
-.gallery{display:grid;gap:8px;max-height:78vh;overflow:auto}.thumb{background:white;color:#17215d;border:3px solid transparent;border-radius:14px;padding:5px;font-weight:900;text-align:center}.thumb.active{border-color:#ff65cf}.thumb img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:9px}
-.stage{background:#fff;border-radius:24px;overflow:hidden;min-height:65vh;display:flex;align-items:center;justify-content:center;touch-action:none}.stage canvas{display:block;width:100%;height:auto;max-height:78vh;object-fit:contain;touch-action:none}
-.tools button{width:100%;padding:12px;margin:5px 0;border:0;border-radius:14px;font-weight:900;color:#17215d}.tools h3{margin:10px 0 6px}.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.swatch{aspect-ratio:1;border-radius:50%;border:3px solid white}.swatch.on{outline:4px solid #ff72d7}.sizes{display:flex;gap:8px}.sizes button{padding:9px}
-@media(max-width:800px){.app{grid-template-columns:1fr}.gallery{grid-template-columns:repeat(3,1fr);max-height:none}.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.tools h3,.swatches,.sizes{grid-column:1/-1}.stage{order:-1;min-height:auto}}
-</style></head><body><header>K-POP DEMON HUNTERS <span style="color:#ff7dde">COLOURING BOOK</span><small>Choose a page • tap an enclosed area to fill • or use the brush</small></header>
-<div class="app"><aside class="panel gallery" id="gallery"></aside><main class="stage"><canvas id="c" width="900" height="900"></canvas></main>
-<aside class="panel tools"><button id="fill">🪣 FILL MODE</button><button id="brush">🖌️ BRUSH</button><button id="eraser">⬜ ERASER</button><button id="undo">↩️ UNDO</button><button id="clear">🗑️ CLEAR PAGE</button><button id="save">⬇️ SAVE PICTURE</button><h3>BRUSH SIZE</h3><div class="sizes"><button data-s="8">S</button><button data-s="18">M</button><button data-s="34">L</button></div><h3>COLOURS</h3><div class="swatches" id="swatches"></div></aside></div>
+<title>K-POP Colouring Game</title><style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,sans-serif;color:#34205d;background:linear-gradient(135deg,#9ee9ff,#f9a7e7,#baa8ff)}
+header{text-align:center;color:#fff;font-weight:1000;font-size:clamp(26px,5vw,46px);padding:18px 10px;text-shadow:0 3px #713c9d}header small{display:block;font-size:15px}
+#gallery{max-width:1150px;margin:auto;padding:10px 16px 30px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:#fff;border:5px solid #fff;border-radius:24px;box-shadow:0 10px 24px #59348b44;overflow:hidden;text-align:center;font-weight:1000;font-size:19px;padding-bottom:10px}.card img{width:100%;aspect-ratio:1;object-fit:cover;display:block}.card small{display:block;color:#e23ba8}
+#paint{display:none;min-height:100vh;padding:10px}.paintTop{max-width:1400px;margin:auto;display:flex;align-items:center;gap:10px;padding:5px 0 10px}.back{border:0;border-radius:16px;background:#fff;color:#5535a0;padding:13px 18px;font-size:18px;font-weight:1000}.title{font-size:22px;font-weight:1000;color:#fff}
+.workspace{max-width:1400px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:12px}.stage{background:#fff;border:5px solid #745adb;border-radius:24px;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:none}.stage canvas{display:block;width:100%;height:auto;max-height:82vh;object-fit:contain;touch-action:none}
+.tools{background:#ffffffee;border:4px solid #7658da;border-radius:24px;padding:12px}.tools h3{margin:8px 0;text-align:center}.tool{width:100%;border:0;border-radius:14px;padding:12px 8px;margin:4px 0;font-weight:1000;font-size:15px;background:#674ed6;color:#fff}.tool.active{background:#ff4caf}.colors{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}.sw{aspect-ratio:1;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 2px #bdaaf0}.sw.on{outline:4px solid #ff43b4}.sizes{display:grid;grid-template-columns:1fr;gap:6px}.size{border:0;border-radius:12px;padding:10px;font-weight:900;background:#eee8ff;color:#452b87}.size.on{background:#ffb5e5}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.workspace{grid-template-columns:minmax(0,1fr) 118px}.tools{padding:6px;border-width:3px}.tools h3{font-size:13px}.tool,.size{font-size:11px;padding:8px 3px}.colors{grid-template-columns:repeat(2,1fr);gap:5px}.paintTop{padding-top:0}.stage canvas{max-height:78vh}}
+</style></head><body>
+<section id="gallery"><header>✨ K-POP DEMON HUNTERS<br>COLOURING GAME ✨<small>Choose a picture to start colouring</small></header><div class="grid" id="grid"></div></section>
+<section id="paint"><div class="paintTop"><button class="back" id="back">← BACK</button><div class="title" id="pageTitle"></div></div><div class="workspace">
+<div class="stage"><canvas id="c" width="900" height="900"></canvas></div>
+<aside class="tools"><h3>🎨 COLOURS</h3><div class="colors" id="colors"></div><h3>BRUSH SIZE</h3><div class="sizes"><button class="size" data-s="12">SMALL</button><button class="size on" data-s="28">MEDIUM</button><button class="size" data-s="50">LARGE</button></div><h3>TOOLS</h3><button class="tool active" id="fill">🪣 FILL</button><button class="tool" id="brush">🖌️ BRUSH</button><button class="tool" id="eraser">⬜ ERASER</button><button class="tool" id="undo">↩️ UNDO</button><button class="tool" id="clear">🗑️ CLEAR</button></aside>
+</div></section>
 <script>
-const PAGES=[["GROUP", "group.png"], ["HUNTR/X", "huntrx.png"], ["RUMI", "rumi.png"], ["MIRA", "mira.png"], ["ZOEY", "zoey.png"], ["JINU", "jinu.png"], ["SAJA BOYS", "saja-boys.png"], ["DERPY", "derpy.png"], ["TEAM", "team.png"]];
-const C=document.getElementById('c'),X=C.getContext('2d',{willReadFrequently:true}),gallery=document.getElementById('gallery');
-let page=0,base=null,color='#ff5ab7',mode='fill',size=18,drawing=false,last=null,history=[];
-const COLORS=['#ffcf33','#ff922e','#ff5353','#ff5ab7','#e66be8','#a83de0','#6556e8','#3878ef','#24a8ef','#27cfe8','#37d95b','#10b950','#079447','#7cab35','#b97a35','#8b5a35','#111111','#ffffff'];
-function push(){history.push(C.toDataURL());if(history.length>12)history.shift()}
-function load(i){page=i;history=[];[...gallery.children].forEach((e,n)=>e.classList.toggle('active',n===i));let im=new Image();im.onload=()=>{X.fillStyle='white';X.fillRect(0,0,900,900);X.drawImage(im,0,0,900,900);base=X.getImageData(0,0,900,900);push()};im.src=PAGES[i][1]}
-PAGES.forEach((p,i)=>{let d=document.createElement('div');d.className='thumb';d.innerHTML=`<img src="${p[1]}"><div>${p[0]}</div>`;d.onclick=()=>load(i);gallery.appendChild(d)});
-const sw=document.getElementById('swatches');COLORS.forEach((v,i)=>{let b=document.createElement('button');b.className='swatch'+(i===3?' on':'');b.style.background=v;b.onclick=()=>{color=v;[...sw.children].forEach(x=>x.classList.remove('on'));b.classList.add('on')};sw.appendChild(b)});
-function hex(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16),255]}
-function pos(e){let r=C.getBoundingClientRect();return [Math.floor((e.clientX-r.left)*900/r.width),Math.floor((e.clientY-r.top)*900/r.height)]}
-function flood(sx,sy){
- let im=X.getImageData(0,0,900,900),d=im.data,idx=(sy*900+sx)*4;
- // Don't paint black outline pixels.
- if(d[idx]<80&&d[idx+1]<80&&d[idx+2]<80)return;
- let target=[d[idx],d[idx+1],d[idx+2]],fill=hex(color);if(Math.abs(target[0]-fill[0])<5&&Math.abs(target[1]-fill[1])<5&&Math.abs(target[2]-fill[2])<5)return;
- push();let q=[[sx,sy]],seen=new Uint8Array(810000),tol=42,count=0;
- while(q.length&&count<500000){let [x,y]=q.pop(),k=y*900+x;if(x<0||y<0||x>=900||y>=900||seen[k])continue;seen[k]=1;let j=k*4,r=d[j],g=d[j+1],b=d[j+2];
-   if(r<85&&g<85&&b<85)continue;
-   if(Math.abs(r-target[0])>tol||Math.abs(g-target[1])>tol||Math.abs(b-target[2])>tol)continue;
-   d[j]=fill[0];d[j+1]=fill[1];d[j+2]=fill[2];d[j+3]=255;count++;q.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
- }X.putImageData(im,0,0)
-}
-function stroke(a,b){X.strokeStyle=mode==='eraser'?'white':color;X.lineWidth=size;X.lineCap='round';X.lineJoin='round';X.beginPath();X.moveTo(...a);X.lineTo(...b);X.stroke();if(base){X.save();X.globalCompositeOperation='source-over';X.putImageData(base,0,0);X.restore()}}
-C.addEventListener('pointerdown',e=>{let p=pos(e);if(mode==='fill'){flood(...p);return}push();drawing=true;last=p;C.setPointerCapture(e.pointerId);e.preventDefault()});
-C.addEventListener('pointermove',e=>{if(!drawing)return;let p=pos(e);X.strokeStyle=mode==='eraser'?'white':color;X.lineWidth=size;X.lineCap='round';X.beginPath();X.moveTo(...last);X.lineTo(...p);X.stroke();last=p;e.preventDefault()});
-C.addEventListener('pointerup',()=>{drawing=false;last=null});
-fill.onclick=()=>mode='fill';brush.onclick=()=>mode='brush';eraser.onclick=()=>mode='eraser';
-document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>size=+b.dataset.s);
-undo.onclick=()=>{if(history.length<2)return;history.pop();let im=new Image();im.onload=()=>{X.clearRect(0,0,900,900);X.drawImage(im,0,0)};im.src=history[history.length-1]};
-clear.onclick=()=>load(page);save.onclick=()=>{let a=document.createElement('a');a.download='my-colouring.png';a.href=C.toDataURL('image/png');a.click()};load(0);
+const PAGES=[["BIG STAR", "01-big-star.png", "Easy"], ["BIG HEART", "02-big-heart.png", "Easy"], ["MICROPHONE", "03-microphone.png", "Easy"], ["CHARACTER", "04-easy-character.png", "Easy+"], ["DERPY CAT", "05-derpy-cat.png", "Easy+"], ["FRIENDS", "06-character-cat.png", "Medium"], ["CHARACTER", "07-medium-character.png", "Medium"], ["HUNTR/X", "08-three-characters.png", "Hard"], ["GROUP", "09-detailed-group.png", "Expert"]],grid=document.getElementById('grid'),gallery=document.getElementById('gallery'),paint=document.getElementById('paint'),C=document.getElementById('c'),X=C.getContext('2d',{willReadFrequently:true});
+let page=0,color='#ff62b0',mode='fill',brushSize=28,drawing=false,last=null,hist=[];
+const cols=['#ff3333','#ff62b0','#ff9138','#ffd83d','#37d65a','#28bce8','#3978ee','#8e50e8','#9a653f','#111111','#ffffff'];
+PAGES.forEach((p,i)=>{let d=document.createElement('div');d.className='card';d.innerHTML=`<img src="${p[1]}"><div>${p[0]}<small>${p[2]}</small></div>`;d.onclick=()=>openPage(i);grid.appendChild(d)});
+function snap(){hist.push(C.toDataURL());if(hist.length>12)hist.shift()}
+function openPage(i){page=i;gallery.style.display='none';paint.style.display='block';pageTitle.textContent=PAGES[i][0]+' • '+PAGES[i][2];load()}
+function load(){hist=[];let im=new Image();im.onload=()=>{X.fillStyle='white';X.fillRect(0,0,900,900);X.drawImage(im,0,0,900,900);snap()};im.src=PAGES[page][1]}
+back.onclick=()=>{paint.style.display='none';gallery.style.display='block'}
+cols.forEach((v,i)=>{let b=document.createElement('button');b.className='sw'+(i===1?' on':'');b.style.background=v;b.onclick=()=>{color=v;document.querySelectorAll('.sw').forEach(s=>s.classList.remove('on'));b.classList.add('on')};colors.appendChild(b)});
+function selectMode(m){mode=m;[fill,brush,eraser].forEach(b=>b.classList.remove('active'));document.getElementById(m).classList.add('active')}
+fill.onclick=()=>selectMode('fill');brush.onclick=()=>selectMode('brush');eraser.onclick=()=>selectMode('eraser');
+document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{brushSize=+b.dataset.s;document.querySelectorAll('[data-s]').forEach(x=>x.classList.remove('on'));b.classList.add('on')});
+function pt(e){let r=C.getBoundingClientRect();return [Math.floor((e.clientX-r.left)*900/r.width),Math.floor((e.clientY-r.top)*900/r.height)]}
+function rgb(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+function flood(x,y){let im=X.getImageData(0,0,900,900),d=im.data,k=(y*900+x)*4;if(d[k]<100&&d[k+1]<100&&d[k+2]<100)return;let t=[d[k],d[k+1],d[k+2]],f=rgb(color),q=[[x,y]],seen=new Uint8Array(810000);snap();while(q.length){let [a,b]=q.pop();if(a<0||b<0||a>=900||b>=900)continue;let n=b*900+a;if(seen[n])continue;seen[n]=1;let j=n*4;if(d[j]<115&&d[j+1]<115&&d[j+2]<115)continue;if(Math.abs(d[j]-t[0])>25||Math.abs(d[j+1]-t[1])>25||Math.abs(d[j+2]-t[2])>25)continue;d[j]=f[0];d[j+1]=f[1];d[j+2]=f[2];q.push([a+1,b],[a-1,b],[a,b+1],[a,b-1])}X.putImageData(im,0,0)}
+C.onpointerdown=e=>{let p=pt(e);if(mode==='fill'){flood(...p);return}snap();drawing=true;last=p;C.setPointerCapture(e.pointerId);e.preventDefault()};
+C.onpointermove=e=>{if(!drawing)return;let p=pt(e);X.strokeStyle=mode==='eraser'?'white':color;X.lineWidth=brushSize;X.lineCap='round';X.lineJoin='round';X.beginPath();X.moveTo(...last);X.lineTo(...p);X.stroke();last=p;e.preventDefault()};C.onpointerup=()=>{drawing=false;last=null};
+undo.onclick=()=>{if(hist.length<2)return;hist.pop();let im=new Image();im.onload=()=>{X.clearRect(0,0,900,900);X.drawImage(im,0,0)};im.src=hist[hist.length-1]};clear.onclick=load;
 </script></body></html>
