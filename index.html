@@ -1,0 +1,112 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>K-POP Colouring Game</title><style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,sans-serif;color:#34205d;background:linear-gradient(135deg,#9ee9ff,#f9a7e7,#baa8ff)}
+header{text-align:center;color:#fff;font-weight:1000;font-size:clamp(26px,5vw,46px);padding:18px 10px;text-shadow:0 3px #713c9d}header small{display:block;font-size:15px}
+#gallery{max-width:1150px;margin:auto;padding:10px 16px 30px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:#fff;border:5px solid #fff;border-radius:24px;box-shadow:0 10px 24px #59348b44;overflow:hidden;text-align:center;font-weight:1000;font-size:19px;padding-bottom:10px}.card img{width:100%;aspect-ratio:1;object-fit:cover;display:block}.card small{display:block;color:#e23ba8}
+#paint{display:none;min-height:100vh;padding:10px}.paintTop{max-width:1400px;margin:auto;display:flex;align-items:center;gap:10px;padding:5px 0 10px}.back{border:0;border-radius:16px;background:#fff;color:#5535a0;padding:13px 18px;font-size:18px;font-weight:1000}.title{font-size:22px;font-weight:1000;color:#fff}
+.workspace{max-width:1400px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:12px}.stage{background:#fff;border:5px solid #745adb;border-radius:24px;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:none}.stage canvas{display:block;width:100%;height:auto;max-height:82vh;object-fit:contain;touch-action:none}
+.tools{background:#ffffffee;border:4px solid #7658da;border-radius:24px;padding:12px}.tools h3{margin:8px 0;text-align:center}.tool{width:100%;border:0;border-radius:14px;padding:12px 8px;margin:4px 0;font-weight:1000;font-size:15px;background:#674ed6;color:#fff}.tool.active{background:#ff4caf}.colors{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}.sw{aspect-ratio:1;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 2px #bdaaf0}.sw.on{outline:4px solid #ff43b4}.sizes{display:grid;grid-template-columns:1fr;gap:6px}.size{border:0;border-radius:12px;padding:10px;font-weight:900;background:#eee8ff;color:#452b87}.size.on{background:#ffb5e5}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.workspace{grid-template-columns:minmax(0,1fr) 118px}.tools{padding:6px;border-width:3px}.tools h3{font-size:13px}.tool,.size{font-size:11px;padding:8px 3px}.colors{grid-template-columns:repeat(2,1fr);gap:5px}.paintTop{padding-top:0}.stage canvas{max-height:78vh}}
+
+/* v5: colouring picture dominates the screen; all controls sit below it */
+.workspace{max-width:1400px;margin:auto;display:flex!important;flex-direction:column!important;gap:10px!important}
+.stage{width:100%!important;height:80vh!important;min-height:520px;background:#fff;border:5px solid #745adb;border-radius:24px;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:none}
+.stage canvas{display:block!important;width:auto!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain;touch-action:none}
+.tools{width:100%!important;background:#ffffffee;border:4px solid #7658da;border-radius:24px;padding:10px!important;display:flex!important;flex-wrap:wrap!important;align-items:center!important;justify-content:center!important;gap:8px!important}
+.tools h3{margin:4px 8px!important;font-size:14px!important}
+.colors{display:flex!important;flex-wrap:wrap!important;gap:7px!important;margin:2px 8px!important}
+.sw{width:42px!important;height:42px!important;aspect-ratio:1!important}
+.sizes{display:flex!important;gap:6px!important}
+.size,.tool{width:auto!important;min-width:72px!important;margin:0!important;padding:10px 12px!important}
+@media(max-width:700px){
+ .workspace{display:flex!important;flex-direction:column!important}
+ .stage{height:72vh!important;min-height:390px!important}
+ .tools{display:flex!important;flex-wrap:wrap!important;padding:7px!important}
+ .colors{display:flex!important;flex-wrap:wrap!important}
+ .sw{width:36px!important;height:36px!important}
+ .size,.tool{font-size:11px!important;min-width:58px!important;padding:8px 7px!important}
+}
+
+/* v9 upgrades: full-size art, expanded palettes, glitter and save */
+#paint{padding:6px 8px 18px}
+.paintTop{max-width:1600px}
+.workspace{max-width:1600px!important}
+.stage{height:calc(100dvh - 88px)!important;min-height:420px!important;border-width:4px!important;background:#fff}
+.stage canvas{width:100%!important;height:100%!important;object-fit:contain!important}
+.tools{position:relative;overflow:visible}
+.paletteGroup{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.paletteLabel{font-weight:1000;font-size:13px;margin-left:5px}
+.sw{position:relative;cursor:pointer}
+.sw.glitter{overflow:hidden}.sw.glitter.rainbow{background:conic-gradient(#ff3cac,#ffd93d,#65f6ff,#9d62ff,#ff3cac)!important}.sw.glitter.pink{background:radial-gradient(circle at 30% 30%,#fff 0 7%,transparent 8%),linear-gradient(135deg,#ffb3df,#ff2aa8,#fff0f8)!important}.sw.glitter.gold{background:radial-gradient(circle at 65% 30%,#fff 0 7%,transparent 8%),linear-gradient(135deg,#fff2a6,#d99b00,#fff7c7)!important}.sw.glitter.blue{background:radial-gradient(circle at 35% 65%,#fff 0 7%,transparent 8%),linear-gradient(135deg,#bff7ff,#19bff5,#b78cff)!important}
+.sw.glitter:after{content:'✨';position:absolute;inset:0;display:grid;place-items:center;font-size:18px;text-shadow:0 1px 2px #0005}
+.save{background:#19a76f!important}
+#saveMsg{font-weight:900;font-size:13px;color:#3e2b78;min-width:100%;text-align:center;height:18px}
+@media(max-width:700px){
+ #paint{padding:4px}
+ .paintTop{padding:2px 0 6px}.back{padding:9px 12px;font-size:15px}.title{font-size:16px}
+ .stage{height:calc(100dvh - 65px)!important;min-height:360px!important;border-radius:16px!important}
+ .tools{border-radius:16px!important;gap:5px!important}
+ .tools h3{width:100%;margin:3px 0!important}
+ .sw{width:34px!important;height:34px!important}
+ .paletteLabel{font-size:11px}
+}
+</style></head><body>
+<section id="gallery"><header>✨ K-POP DEMON HUNTERS<br>COLOURING GAME ✨<small>Choose a picture to start colouring</small></header><div class="grid" id="grid"></div></section>
+<section id="paint"><div class="paintTop"><button class="back" id="back">← BACK</button><div class="title" id="pageTitle"></div></div><div class="workspace">
+<div class="stage"><canvas id="c" width="900" height="900"></canvas></div>
+<aside class="tools"><h3>🎨 COLOURS</h3><div class="colors" id="colors"></div><div class="paletteGroup"><span class="paletteLabel">SKIN TONES</span><div class="colors" id="skinColors"></div></div><div class="paletteGroup"><span class="paletteLabel">SPARKLE</span><div class="colors" id="specialColors"></div></div><h3>BRUSH SIZE</h3><div class="sizes"><button class="size" data-s="10">TINY</button><button class="size" data-s="22">SMALL</button><button class="size on" data-s="38">MEDIUM</button><button class="size" data-s="62">LARGE</button></div><h3>TOOLS</h3><button class="tool" id="fill">🪣 FILL</button><button class="tool active" id="brush">👆 FINGER COLOUR</button><button class="tool" id="eraser">⬜ ERASER</button><button class="tool" id="undo">↩️ UNDO</button><button class="tool" id="clear">🗑️ CLEAR</button><button class="tool save" id="save">📸 SAVE PHOTO</button><div id="saveMsg"></div></aside>
+</div></section>
+<script>
+const PAGES=[["BIG STAR", "01-big-star.png", "Easy"], ["BIG HEART", "02-big-heart.png", "Easy"], ["MICROPHONE", "03-microphone.png", "Easy"], ["EASY CHARACTER", "04-easy-character.png", "Easy+"], ["DERPY CAT", "05-derpy-cat.png", "Easy+"], ["HUNTR/X", "huntrx.png", "Medium"], ["RUMI", "rumi.png", "Medium"], ["MIRA", "mira.png", "Medium"], ["ZOEY", "zoey.png", "Medium"], ["JINU", "jinu.png", "Hard"], ["SAJA BOYS", "saja-boys.png", "Hard"], ["DERPY", "derpy.png", "Hard"], ["TEAM", "team.png", "Expert"], ["GROUP", "group.png", "Expert"], ["BIRTHDAY CAKE", "15-birthday-cake.png", "Family"], ["SIBLING HUG", "16-sibling-hug.png", "Family"], ["THREE PRINCESSES", "17-three-princesses.png", "Family"], ["CHRISTMAS FAMILY", "18-christmas-family.png", "Family"], ["FISHING", "19-fishing.png", "Family"], ["FIRST DAY OF KINDER", "20-first-day-kinder.png", "Family"], ["MUM & DAUGHTER", "21-mum-and-daughter.png", "Family"], ["LAMBORGHINI PRINCESSES", "22-lamborghini-princesses.png", "Family"], ["PRINCESS SISTERS", "23-princess-sisters.png", "Family"], ["FAMILY CUPCAKES", "24-family-cupcakes.png", "Family"], ["GIRL & DACHSHUND", "25-girl-and-dachshund.png", "Family"], ["SCHOOL SISTERS", "26-school-sisters.png", "Family"]],grid=document.getElementById('grid'),gallery=document.getElementById('gallery'),paint=document.getElementById('paint'),C=document.getElementById('c'),X=C.getContext('2d',{willReadFrequently:true});
+let page=0,color='#ff62b0',mode='brush',brushSize=38,drawing=false,last=null,hist=[],outline=null,effect='solid',glitterPalette=null;
+const cols=['#ff1744','#ff5252','#ff62b0','#ff3dbb','#ff9138','#ffca28','#fff23d','#aeea00','#37d65a','#00c853','#26d9c7','#28bce8','#00a6ff','#3978ee','#304ffe','#8e50e8','#b84cff','#6d35b5','#9a653f','#795548','#111111','#777777','#ffffff'];
+const skins=['#f9dcc4','#f1c27d','#e0ac69','#c68642','#a66a3f','#8d5524','#5c3827','#3b241b'];
+PAGES.forEach((p,i)=>{let d=document.createElement('div');d.className='card';d.innerHTML=`<img src="${p[1]}"><div>${p[0]}<small>${p[2]}</small></div>`;d.onclick=()=>openPage(i);grid.appendChild(d)});
+function snap(){hist.push(C.toDataURL());if(hist.length>12)hist.shift()}
+function openPage(i){page=i;gallery.style.display='none';paint.style.display='block';pageTitle.textContent=PAGES[i][0]+' • '+PAGES[i][2];load()}
+function load(){hist=[];let im=new Image();im.onload=()=>{X.fillStyle='white';X.fillRect(0,0,900,900);X.drawImage(im,0,0,900,900);
+let oi=new Image(); oi.onload=()=>{outline=oi; X.drawImage(outline,0,0,900,900); snap()}; oi.src=PAGES[page][1].replace('.png','-outline.png')};im.src=PAGES[page][1]}
+back.onclick=()=>{paint.style.display='none';gallery.style.display='block'}
+function chooseSw(b,v,fx='solid',pal=null){color=v;effect=fx;glitterPalette=pal;document.querySelectorAll('.sw').forEach(s=>s.classList.remove('on'));b.classList.add('on')}
+cols.forEach((v,i)=>{let b=document.createElement('button');b.className='sw'+(i===2?' on':'');b.style.background=v;b.title=v;b.onclick=()=>chooseSw(b,v);colors.appendChild(b)});
+skins.forEach(v=>{let b=document.createElement('button');b.className='sw';b.style.background=v;b.title='Skin tone';b.onclick=()=>chooseSw(b,v);skinColors.appendChild(b)});
+const glitters=[['rainbow','#ff4fbd',['#ff2ca8','#ffd83d','#52e8ff','#9d62ff','#ffffff']],['pink','#ff48b5',['#ff168f','#ff75c8','#ffd0eb','#ffffff']],['gold','#e5a900',['#c98900','#ffd43b','#fff0a6','#ffffff']],['blue','#29c7f6',['#00a9ef','#63e8ff','#a78bfa','#ffffff']]];glitters.forEach(([cls,v,pal])=>{let b=document.createElement('button');b.className='sw glitter '+cls;b.title=cls[0].toUpperCase()+cls.slice(1)+' glitter';b.onclick=()=>chooseSw(b,v,'glitter',pal);specialColors.appendChild(b)});
+function selectMode(m){mode=m;[fill,brush,eraser].forEach(b=>b.classList.remove('active'));document.getElementById(m).classList.add('active')}
+fill.onclick=()=>selectMode('fill');brush.onclick=()=>selectMode('brush');eraser.onclick=()=>selectMode('eraser');
+document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{brushSize=+b.dataset.s;document.querySelectorAll('[data-s]').forEach(x=>x.classList.remove('on'));b.classList.add('on')});
+function pt(e){
+  const r=C.getBoundingClientRect();
+  // The 900x900 artwork is displayed with object-fit:contain. On a tall or wide
+  // full-screen canvas this creates invisible letterboxing, so map the pointer
+  // to the actual square artwork rather than to the whole CSS canvas box.
+  const side=Math.min(r.width,r.height);
+  const left=r.left+(r.width-side)/2;
+  const top=r.top+(r.height-side)/2;
+  const x=Math.max(0,Math.min(899,(e.clientX-left)*900/side));
+  const y=Math.max(0,Math.min(899,(e.clientY-top)*900/side));
+  return [Math.floor(x),Math.floor(y)];
+}
+function rgb(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+function flood(x,y){let im=X.getImageData(0,0,900,900),d=im.data,k=(y*900+x)*4;if(d[k]<100&&d[k+1]<100&&d[k+2]<100)return;let t=[d[k],d[k+1],d[k+2]],f=rgb(color),q=[[x,y]],seen=new Uint8Array(810000);snap();while(q.length){let [a,b]=q.pop();if(a<0||b<0||a>=900||b>=900)continue;let n=b*900+a;if(seen[n])continue;seen[n]=1;let j=n*4;if(d[j]<115&&d[j+1]<115&&d[j+2]<115)continue;if(Math.abs(d[j]-t[0])>25||Math.abs(d[j+1]-t[1])>25||Math.abs(d[j+2]-t[2])>25)continue;d[j]=f[0];d[j+1]=f[1];d[j+2]=f[2];q.push([a+1,b],[a-1,b],[a,b+1],[a,b-1])}X.putImageData(im,0,0)}
+function sparkleDot(x,y){
+ const palette=glitterPalette||['#ff2ca8','#ffd83d','#52e8ff','#9d62ff','#ffffff'];
+ X.save();
+ // Dense coloured glitter base so the effect is obvious even with a quick swipe.
+ X.globalAlpha=.38;X.fillStyle=color;X.beginPath();X.arc(x,y,brushSize*.48,0,Math.PI*2);X.fill();
+ X.globalCompositeOperation='source-over';
+ const count=Math.max(14,Math.round(brushSize*.55));
+ for(let i=0;i<count;i++){
+   let a=Math.random()*Math.PI*2,r=Math.sqrt(Math.random())*brushSize*.52,px=x+Math.cos(a)*r,py=y+Math.sin(a)*r;
+   let sz=Math.max(1.5,brushSize*(.025+Math.random()*.06));
+   X.fillStyle=palette[(Math.random()*palette.length)|0];X.globalAlpha=.72+Math.random()*.28;
+   if(i%4===0){X.translate(px,py);X.rotate(Math.PI/4);X.fillRect(-sz/2,-sz/2,sz,sz);X.rotate(-Math.PI/4);X.translate(-px,-py)}
+   else{X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.fill()}
+ }
+ X.restore();
+}
+function redrawOutline(){if(outline){X.save();X.globalCompositeOperation='source-over';X.drawImage(outline,0,0,900,900);X.restore()}}
+C.onpointerdown=e=>{let p=pt(e);if(mode==='fill'){flood(...p);return}snap();drawing=true;last=p;C.setPointerCapture(e.pointerId);e.preventDefault()};
+C.onpointermove=e=>{if(!drawing)return;let p=pt(e);if(mode!=='eraser'&&effect==='glitter'){const dx=p[0]-last[0],dy=p[1]-last[1],dist=Math.hypot(dx,dy),steps=Math.max(1,Math.ceil(dist/7));for(let i=1;i<=steps;i++)sparkleDot(last[0]+dx*i/steps,last[1]+dy*i/steps)}else{X.strokeStyle=mode==='eraser'?'white':color;X.lineWidth=brushSize;X.lineCap='round';X.lineJoin='round';X.beginPath();X.moveTo(...last);X.lineTo(...p);X.stroke()}last=p;redrawOutline();e.preventDefault()};C.onpointerup=()=>{drawing=false;last=null};
+undo.onclick=()=>{if(hist.length<2)return;hist.pop();let im=new Image();im.onload=()=>{X.clearRect(0,0,900,900);X.drawImage(im,0,0)};im.src=hist[hist.length-1]};clear.onclick=load;
+save.onclick=()=>{redrawOutline();const name=PAGES[page][0].toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-coloured.png';C.toBlob(blob=>{if(!blob)return;const file=new File([blob],name,{type:'image/png'});if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:'My colouring picture'}).catch(()=>{})}else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}saveMsg.textContent='✨ Picture ready to save!';setTimeout(()=>saveMsg.textContent='',2500)},'image/png')};
+</script></body></html>
